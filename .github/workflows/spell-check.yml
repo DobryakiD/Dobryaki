@@ -1,0 +1,27 @@
+name: CI/CD Pipeline
+
+permissions:
+    contents: write
+
+on:
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: .
+
+jobs:
+  spell-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Aspell
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y hunspell hunspell-en-us hunspell-ru
+
+      - name: Run spell check
+        run: bash scripts/spell-check.sh
